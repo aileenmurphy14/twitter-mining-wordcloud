@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.aileen</groupId>
+  <artifactId>maven.twitterproject</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>twitterproject</name>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.kennycason</groupId>
+  		<artifactId>kumo-core</artifactId>
+  		<version>1.22</version>
+	</dependency>
+	    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.25</version>
+    </dependency>
+    <dependency>
+	    <groupId>org.slf4j</groupId>
+	    <artifactId>slf4j-jdk14</artifactId>
+	    <version>1.7.25</version>
+	</dependency>
+  </dependencies>
+</project>
