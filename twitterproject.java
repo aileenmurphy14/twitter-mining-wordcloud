@@ -1,7 +1,4 @@
 package maven.twitterproject;
-/**
- * Twitter Word Cloud 
- */
 import twitter4j.*;
 import java.io.*;
 import java.util.*;
@@ -20,9 +17,8 @@ import java.util.List;
 
 public class twitterproject {
     public static void main(String[] args) throws IOException{
-                // Twitter API credentials to access tweets
-                //System.out.println("This does something");
         ConfigurationBuilder cb = new ConfigurationBuilder();
+	//Twitter API Credentials
         cb.setDebugEnabled(true).setOAuthConsumerKey("##############")
                 .setOAuthConsumerSecret("##############")
                 .setOAuthAccessToken("##############")
@@ -34,12 +30,11 @@ public class twitterproject {
         System.out.println("Hashtag to search for: ");
         Scanner input = new Scanner(System.in);
         String searchTerm = input.nextLine();
-        Query query = new Query(searchTerm + " -filter:retweets");
+        Query query = new Query(searchTerm + " -filter:retweets");	//searches for tweets with keyword minus retweets 
         query.setLang("en");
         long lastID = Long.MAX_VALUE;
 
-
-        int numberOfTweets = 2000;
+        int numberOfTweets = 2000;	//collects 2000 tweets
         ArrayList<Status> tweets = new ArrayList<Status>();
         while (tweets.size() < numberOfTweets) {
             if (numberOfTweets - tweets.size() > 100) {
@@ -65,36 +60,34 @@ public class twitterproject {
         }
         for (int i = 0; i < tweets.size(); i++) {
             Status t = (Status) tweets.get(i);
-            // String user = t.getUser().getScreenName();
             String msg = t.getText();
-            // System.out.println(i + " USER: " + user + " wrote " + msg + "\n");
-            String cleanedTweet = (cleanTweet(msg));
+            String cleanedTweet = (cleanTweet(msg));	//cleans tweet
             String[] arr = cleanedTweet.split(" ");
             for (String s : arr) {
-                    writeToFile(s);
-
+                    writeToFile(s);	//writes cleaned tweet to file
             }
         }
-        getCloud();
+        getCloud();	//gets wordcloud
     }
     
+    //converts tweet to lowercase, removes url's, and replaces non-alphanumeric
     public static String cleanTweet(String msg) {
         String cleanedMsg = msg.toLowerCase();
         cleanedMsg = cleanedMsg.replaceAll("http\\S+", "");
         cleanedMsg = cleanedMsg.replaceAll("[^A-Za-z0-9 ]+", "");
-        // System.out.println(cleanedMsg);
         return cleanedMsg;
     }
-
+	
+   //writes cleaned tweet to text file
    public static void writeToFile(String tweet) throws java.io.IOException {
         java.io.File file = new java.io.File("cleanedtweets.txt");
-        //System.out.println("will be added to file.");
         java.io.FileWriter fw = new FileWriter(file, true);
         java.io.PrintWriter output = new PrintWriter(fw);
         output.print(tweet + " ");
         output.close();
     }
     
+    //creates wordcloud of 300 most frequently used terms minus stopwords with kumo wordcloud api
     public static void getCloud() throws IOException{
     	final FrequencyAnalyzer frequencyAnalyzer = new FrequencyAnalyzer();
     	frequencyAnalyzer.setMinWordLength(3);
@@ -109,10 +102,11 @@ public class twitterproject {
     	wordCloud.setColorPalette(new ColorPalette(new Color(0x4055F1), new Color(0x408DF1), new Color(0x40AAF1), new Color(0x40C5F1), new Color(0x40D3F1), new Color(0xFFFFFF)));
     	wordCloud.setFontScalar(new SqrtFontScalar(10, 40));
     	wordCloud.build(wordFrequencies);
-        wordCloud.writeToFile("cloud.png");
+        wordCloud.writeToFile("cloud.png");	//writes wordcloud to png file
     }
 }
 
 //Sources:
 //https://github.com/kennycason/kumo
 //https://www.youtube.com/watch?v=x8sMN4tossY
+//https://stackoverflow.com/questions/18800610/how-to-retrieve-more-than-100-results-using-twitter4j
